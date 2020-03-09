@@ -13,7 +13,7 @@ class User(AbstractBaseUser):
         first_name (models.CharField): User first name
         last_name (models.CharField): User last name
         gender (models.CharField): User gender
-        email (models.EmailField): User email. This field will be used for
+        email (models.EmailField): User email
         profile_picture (models.CharField): Path to the user profile picture
             accessing the application.
         created_at (models.DateTimeField): Creation date
@@ -31,6 +31,14 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'email'
 
+    def get_contacts(self):
+        return list(map(lambda contact: contact.associate,
+                        self.contacts.all()))
+
+    def get_contact_of(self):
+        return list(map(lambda contact: contact.user,
+                        self.contact_of.all()))
+
 
 class Contact(models.Model):
     """
@@ -38,13 +46,13 @@ class Contact(models.Model):
 
     Class attributes:
         user (models.ForeignKey): related user id
-        contact_id (models.ForeignKey) Contact id
+        contact (models.ForeignKey) contact id
     """
 
     user = models.ForeignKey(User, on_delete=models.CASCADE,
-                             related_name='related_user')
-    contact = models.ForeignKey(User, on_delete=models.CASCADE,
-                                related_name='contacts')
+                             related_name='contacts')
+    associate = models.ForeignKey(User, on_delete=models.CASCADE,
+                                  related_name='contact_of')
 
     class Meta:
-        unique_together = ('user', 'contact')
+        unique_together = ('user', 'associate')
