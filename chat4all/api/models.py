@@ -31,13 +31,25 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'email'
 
-    def get_contacts(self):
-        return list(map(lambda contact: contact.associate,
-                        self.contacts.all()))
+    def get_contacts(self, id=None):
+        if not id:
+            return list(map(lambda contact: contact.associate,
+                            self.contacts.all()))
+        try:
+            return next((contact.associate for contact in self.contacts.all()
+                         if contact.associate.id == uuid.UUID(id)), None)
+        except ValueError:
+            return None
 
-    def get_contact_of(self):
-        return list(map(lambda contact: contact.user,
-                        self.contact_of.all()))
+    def get_contact_of(self, id=None):
+        if not id:
+            return list(map(lambda contact: contact.user,
+                            self.contact_of.all()))
+        try:
+            return next((contact.user for contact in self.contact_of.all()
+                         if contact.user.id == uuid.UUID(id)), None)
+        except ValueError:
+            return None
 
 
 class Contact(models.Model):
@@ -46,7 +58,7 @@ class Contact(models.Model):
 
     Class attributes:
         user (models.ForeignKey): related user id
-        contact (models.ForeignKey) contact id
+        associate (models.ForeignKey) contact id
     """
 
     user = models.ForeignKey(User, on_delete=models.CASCADE,
