@@ -1,28 +1,43 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar,  
   IonItem, 
-  IonCheckbox,
   IonLabel,
   IonNote,
   IonBadge, 
   IonTextarea,
   IonFooter,
   IonAvatar,
-  IonButton, 
-  IonInput} from '@ionic/react';
+  IonButton,
+  IonInput,
+  IonList 
+} from '@ionic/react';
 import React, { useState } from 'react';
 import './Home.css';
  
-const Home: React.FC = () => {
+const Home: React.FC = (props) => {
   const [text2, setText2] = useState('');
-  /*const [langorig, setLano] = useState('');
-  const [langdes, setLandes] = useState('');
+  const ins: any[] = [];
+  const [todos, setTodos] = useState(ins);
+  
+  const sock = new WebSocket("ws://localhost:5002");
+  sock.onmessage = function(event) {
+    console.log(event);
+    console.log(event.data);
+    setTodos([...todos, event.data]);
+ }
+
+  //console.log(todos); 
+  //const [langorig, setLano] = useState('');
+  /*const [langdes, setLandes] = useState('');
   *//*function tranReq(text2) {
     alert(text2);
   }*/
+  
   const apikey ='trnsl.1.1.20200302T153100Z.ed576de6b9201294.01d9dbb5d5aaf34750c60694b203a0ecfdf0b5df';
-  function transText() {
-    alert(text2);
-    //tranReq(text2);
+  function todoChange(e: any) {
+    setText2(e.target.value);
+  }
+
+  function requestTrans() {
     fetch('https://translate.yandex.net/api/v1.5/tr.json/translate?key=' + apikey + '&lang=en-es', {
     method: 'POST',
     headers: {
@@ -31,11 +46,24 @@ const Home: React.FC = () => {
     },
       body: 'text='+text2  
     }).then((response) => response.json()).then((JSONresp) => {
-      console.log(JSONresp);
+      console.log(JSONresp.text);
+      if (sock.readyState == 1) {
+        sock.send(JSONresp.text);
+      }
     }).catch((e) => {
       console.log(e);
     });
   }
+  function transText(e: any) {
+    console.log("aquí pase", text2)
+    if (text2 === '') return
+    //alert(text2)
+    setTodos([...todos, text2]);
+    //e.reset();
+    console.log(todos, text2);
+    //requestTrans();
+    sock.send(text2);
+    }
   
   return (
    
@@ -58,7 +86,14 @@ const Home: React.FC = () => {
         1 min
       </IonBadge>
     </IonItem>
-    
+    <IonList>
+      {todos.map((item, indexv) =>(
+      <IonItem key={indexv}>
+        <IonLabel>{item}</IonLabel>
+      </IonItem>
+  
+      ))}
+      </IonList>
       <IonHeader collapse="condense">
         <IonToolbar>
           <IonTitle size="large">Blank</IonTitle>
@@ -69,7 +104,7 @@ const Home: React.FC = () => {
     <IonFooter>
       <IonItem> 
         <IonToolbar>
-​       <IonTextarea placeholder="message" onIonChange={(e: any) => setText2(e.target.value)}></IonTextarea>
+       <IonTextarea placeholder="message" onIonChange={ todoChange }></IonTextarea>
       <IonButton slot="end" onClick={ transText }>Send</IonButton>
       </IonToolbar>
       </IonItem>
