@@ -32,6 +32,13 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
     def get_contacts(self, id=None):
+        """
+        Retrieves all the contacts associated with an user, or a specified
+        contact if it exists.
+
+        Parameters:
+            id (str): Optional. User id of the contact.
+        """
         if not id:
             return list(map(lambda contact: contact.associate,
                             self.contacts.all()))
@@ -42,6 +49,13 @@ class User(AbstractBaseUser):
             return None
 
     def get_contact_of(self, id=None):
+        """
+        Retrieves all the users of which the User instance is a contact,
+        or a specified user if it exists.
+
+        Parameters:
+            id (str): Optional. User id.
+        """
         if not id:
             return list(map(lambda contact: contact.user,
                             self.contact_of.all()))
@@ -67,4 +81,11 @@ class Contact(models.Model):
                                   related_name='contact_of')
 
     class Meta:
+        """
+        Metadata for the Contact model.
+
+        Class attributes:
+            unique_together: represents an 'unique_together' constraint between
+            two or more fields.
+        """
         unique_together = ('user', 'associate')
