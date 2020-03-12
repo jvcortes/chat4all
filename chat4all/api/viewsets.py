@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.response import Response
-from api import models
-from api import serializers
+from api.models import User, Contact
+from api.serializers import UserSerializer, ContactSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -9,15 +9,9 @@ class UserViewSet(viewsets.ModelViewSet):
     User model view set for the API endpoint.
     Supports the common REST operations.
 
-    Class attributes:
-        queryset (django.db.models.query.QuerySet):
-            Query set for the endpoint.
-        serializer_class
-            (rest_framework.serializer.HyperlinkedModelSerializer):
-            associated serializer class for the User model.
     """
-    queryset = models.User.objects.all()
-    serializer_class = serializers.UserSerializer
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class ContactViewSet(viewsets.ModelViewSet):
@@ -25,14 +19,14 @@ class ContactViewSet(viewsets.ModelViewSet):
     Contact model view set for the API endpoint.
 
     Class attributes:
-        queryset (django.db.models.query.QuerySet):
+        queryset (django.db.query.QuerySet):
             Query set for the endpoint.
         serializer_class
             (rest_framework.serializer.HyperlinkedModelSerializer):
             associated serializer class for the Contact model.
     """
-    queryset = models.Contact.objects.all()
-    serializer_class = serializers.ContactSerializer
+    queryset = Contact.objects.all()
+    serializer_class = ContactSerializer
 
     def list(self, request, user_pk=None):
         """
@@ -44,13 +38,13 @@ class ContactViewSet(viewsets.ModelViewSet):
                 HTTP request.
             user_pk (uuid.UUID): Primary key for the user instance.
         """
-        user = models.User.objects.get(pk=user_pk)
+        user = User.objects.get(pk=user_pk)
         queryset = user.get_contacts()
 
         return Response(
-            serializers.UserSerializer(queryset,
-                                       context={'request': request},
-                                       many=True).data)
+            UserSerializer(queryset,
+                           context={'request': request},
+                           many=True).data)
 
     def retrieve(self, request, user_pk=None, pk=None):
         """
@@ -63,10 +57,31 @@ class ContactViewSet(viewsets.ModelViewSet):
             user_pk (uuid.UUID): Primary key for the user instance.
             pk (uuid.UUID): Primary key for the associated user instance.
         """
-        user = models.User.objects.get(pk=user_pk)
+        user = User.objects.get(pk=user_pk)
         queryset = user.get_contacts(pk)
 
         return Response(
-            serializers.UserSerializer(queryset,
-                                       context={'request': request},
-                                       ).data)
+            UserSerializer(queryset,
+                           context={'request': request},
+                           ).data)
+
+    def create(self, request, user_pk=None):
+        """
+        """
+        data = request.data
+        user = User.objects.get(pk=user_pk)
+        if user:
+            data['user'] = str(user.id)
+
+        serializer = ContactSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+
+        return Response(serializer.data)
+
+    def destroy(self, request, user_pk=None, pk=None):
+        contact = Contact.objects.get(user=user_pk, associate=pk)
+        if contact:
+            contact.delete()
+
+        return Response({})
