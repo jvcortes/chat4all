@@ -8,22 +8,23 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar,
   IonAvatar,
   IonButton,
   IonInput,
-  IonList 
+  IonList,
+  IonPopover 
 } from '@ionic/react';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Home.css';
  
 const Home: React.FC = (props) => {
   const [text2, setText2] = useState('');
   const ins: any[] = [];
   const [todos, setTodos] = useState(ins);
-  
-  const sock = new WebSocket("ws://localhost:5002");
+  const [showPopover, setShowPopover] = useState(false);
+  /*const sock = new WebSocket("ws://localhost:5002");
   sock.onmessage = function(event) {
     console.log(event);
     console.log(event.data);
     setTodos([...todos, event.data]);
- }
+ }*/
 
   //console.log(todos); 
   //const [langorig, setLano] = useState('');
@@ -47,9 +48,10 @@ const Home: React.FC = (props) => {
       body: 'text='+text2  
     }).then((response) => response.json()).then((JSONresp) => {
       console.log(JSONresp.text);
-      if (sock.readyState == 1) {
+      socket.current.send(JSONresp.text);
+      /*if (sock.readyState == 1) {
         sock.send(JSONresp.text);
-      }
+      }*/
     }).catch((e) => {
       console.log(e);
     });
@@ -61,10 +63,21 @@ const Home: React.FC = (props) => {
     setTodos([...todos, text2]);
     //e.reset();
     console.log(todos, text2);
-    //requestTrans();
-    sock.send(text2);
+    requestTrans();
+    
     }
   
+    const socket = useRef(new WebSocket("ws://localhost:5002"))
+
+    useEffect(() => {
+      socket.current.onmessage = (msg) => {
+        console.log(msg);
+        const incomingMessage = `Message from WebSocket: ${msg.data}`;
+        setTodos([...todos, incomingMessage]);
+      }
+    });
+    useEffect(() => () => socket.current.close(), [socket])
+
   return (
    
     <IonPage>
@@ -102,6 +115,24 @@ const Home: React.FC = (props) => {
       
     </IonContent>
     <IonFooter>
+      <IonItem>
+      <IonPopover
+        isOpen={showPopover}
+        onDidDismiss={e => setShowPopover(false)}
+      >
+          <p>Choose your Origin language</p>
+      <IonItem>
+      <IonButton slot="start" onClick={() => setShowPopover(true)}>English</IonButton>
+      </IonItem>
+      <IonItem>
+      <IonButton slot="start">French</IonButton>
+      
+      </IonItem>
+        
+      </IonPopover>
+      <IonButton slot="start" onClick={() => setShowPopover(true)}>Origin</IonButton>
+      <IonButton slot="start">Destination</IonButton>
+      </IonItem>
       <IonItem> 
         <IonToolbar>
        <IonTextarea placeholder="message" onIonChange={ todoChange }></IonTextarea>
