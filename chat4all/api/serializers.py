@@ -15,7 +15,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                   'updated_at']
 
 
-class ContactSerializer(serializers.HyperlinkedModelSerializer):
+class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Contact
         fields = ['user', 'associate']
