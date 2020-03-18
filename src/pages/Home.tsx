@@ -9,16 +9,22 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar,
   IonButton,
   IonInput,
   IonList,
-  IonPopover 
+  IonPopover, 
+  IonText
 } from '@ionic/react';
 import React, { useState, useEffect, useRef } from 'react';
 import './Home.css';
  
 const Home: React.FC = (props) => {
   const [text2, setText2] = useState('');
-  const ins: any[] = [];
+  const ins: any[] = [{}];
   const [todos, setTodos] = useState(ins);
   const [showPopover, setShowPopover] = useState(false);
+  const [showPopover2, setShowPopover2] = useState(false);
+  const [langorig, setLano] = useState('en');
+  const [langdes, setLandes] = useState('es');
+  const [valOrig, setValo] = useState('English');
+  const [valDest, setVald] = useState('Spanish');
   /*const sock = new WebSocket("ws://localhost:5002");
   sock.onmessage = function(event) {
     console.log(event);
@@ -27,9 +33,7 @@ const Home: React.FC = (props) => {
  }*/
 
   //console.log(todos); 
-  //const [langorig, setLano] = useState('');
-  /*const [langdes, setLandes] = useState('');
-  *//*function tranReq(text2) {
+  /*//*function tranReq(text2) {
     alert(text2);
   }*/
   
@@ -39,7 +43,9 @@ const Home: React.FC = (props) => {
   }
 
   function requestTrans() {
-    fetch('https://translate.yandex.net/api/v1.5/tr.json/translate?key=' + apikey + '&lang=en-es', {
+    if (langorig !== "" && langdes !== "") {
+
+    fetch('https://translate.yandex.net/api/v1.5/tr.json/translate?key=' + apikey + '&lang='+langorig+'-'+ langdes, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -56,11 +62,31 @@ const Home: React.FC = (props) => {
       console.log(e);
     });
   }
+  }
+  function printMsg(item: any, indexv: any) {
+    if (item.user) {
+    if (item.user === "remote") {
+      return (
+      <IonItem key={indexv}>
+        <IonText slot="start">{item.text} </IonText>
+      </IonItem>
+  
+    )
+      
+    } else {
+      return (
+        <IonItem key={indexv}>
+          <IonText color="secondary" slot="end">{item.text}</IonText>
+        </IonItem>
+      )
+    }
+  }
+  }
   function transText(e: any) {
     console.log("aquí pase", text2)
     if (text2 === '') return
     //alert(text2)
-    setTodos([...todos, text2]);
+    setTodos([...todos, {'user': 'here','text': text2}]);
     //e.reset();
     console.log(todos, text2);
     requestTrans();
@@ -72,8 +98,8 @@ const Home: React.FC = (props) => {
     useEffect(() => {
       socket.current.onmessage = (msg) => {
         console.log(msg);
-        const incomingMessage = `Message from WebSocket: ${msg.data}`;
-        setTodos([...todos, incomingMessage]);
+        const incomingMessage = msg.data;
+        setTodos([...todos, {'user': 'remote', 'text': incomingMessage}]);
       }
     });
     useEffect(() => () => socket.current.close(), [socket])
@@ -83,36 +109,24 @@ const Home: React.FC = (props) => {
     <IonPage>
     <IonHeader>
       <IonToolbar>
-        <IonTitle>Chat4all</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent>
-    <IonItem>
+      <IonItem>
       <IonAvatar>
-      <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y" />
+      <img src="../../../public/assets/icon/icon.png" />
       </IonAvatar>
       <IonLabel>
-        <h1>Javier Cortés</h1>
+        <h1>Chat4ALL</h1>
         <IonNote>online</IonNote>
       </IonLabel>
       <IonBadge color="success" slot="end">
         1 min
       </IonBadge>
     </IonItem>
+      </IonToolbar>
+    </IonHeader>
+    <IonContent>
     <IonList>
-      {todos.map((item, indexv) =>(
-      <IonItem key={indexv}>
-        <IonLabel>{item}</IonLabel>
-      </IonItem>
-  
-      ))}
+      {todos.map((item, indexv) => printMsg(item, indexv))}
       </IonList>
-      <IonHeader collapse="condense">
-        <IonToolbar>
-          <IonTitle size="large">Blank</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      
     </IonContent>
     <IonFooter>
       <IonItem>
@@ -121,17 +135,50 @@ const Home: React.FC = (props) => {
         onDidDismiss={e => setShowPopover(false)}
       >
           <p>Choose your Origin language</p>
+          <IonItem>
+      <IonButton slot="start" onClick={() => {setShowPopover(false); setLano('es'); setValo('Spanish');}}>Spanish</IonButton>
+      </IonItem>
+
       <IonItem>
-      <IonButton slot="start" onClick={() => setShowPopover(true)}>English</IonButton>
+      <IonButton slot="start" onClick={() => {setShowPopover(false); setLano('en'); setValo('English');}}>English</IonButton>
       </IonItem>
       <IonItem>
-      <IonButton slot="start">French</IonButton>
+      <IonButton slot="start" onClick={() => {setShowPopover(false); setLano('fr'); setValo('French');}}>French</IonButton>
       
+      </IonItem>
+      <IonItem>
+      <IonButton slot="start" onClick={() => {setShowPopover(false); setLano('de'); setValo('German');}}>German</IonButton>
+      </IonItem>
+      <IonItem>
+      <IonButton slot="start" onClick={() => {setShowPopover(false); setLano('pt'); setValo('Portuguese');}}>Portuguese</IonButton>
       </IonItem>
         
       </IonPopover>
-      <IonButton slot="start" onClick={() => setShowPopover(true)}>Origin</IonButton>
-      <IonButton slot="start">Destination</IonButton>
+      <IonPopover
+        isOpen={showPopover2}
+        onDidDismiss={e => setShowPopover2(false)}
+      >
+          <p>Choose your Origin language</p>
+          <IonItem>
+      <IonButton slot="start" onClick={() => {setShowPopover2(false); setLandes('es'); setVald('Spanish')}}>Spanish</IonButton>
+      </IonItem>
+      <IonItem>
+      <IonButton slot="start" onClick={() => {setShowPopover2(false); setLandes('en'); setVald('English')}}>English</IonButton>
+      </IonItem>
+      <IonItem>
+      <IonButton slot="start" onClick={() => {setShowPopover2(false); setLandes('fr'); setVald('French')}}>French</IonButton>
+      
+      </IonItem>
+      <IonItem>
+      <IonButton slot="start" onClick={() => {setShowPopover2(false); setLandes('de'); setVald('German')}}>German</IonButton>
+      </IonItem>
+      <IonItem>
+      <IonButton slot="start" onClick={() => {setShowPopover2(false); setLandes('pt'); setVald('Portuguese')}}>Portuguese</IonButton>
+      </IonItem>
+        
+      </IonPopover>
+      <IonButton slot="start" onClick={() => setShowPopover(true)}>{valOrig}</IonButton>
+      <IonButton slot="start" onClick={() => setShowPopover2(true)}>{valDest}</IonButton>
       </IonItem>
       <IonItem> 
         <IonToolbar>

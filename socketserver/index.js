@@ -11,6 +11,7 @@ s.on('connection', function connection(ws) {
                     console.log("mensajes enviados a cada cliente");
                     client.send(message);   
                 }, 500);    
+                console.log("sequeda aqui");
              }
         });
     });
