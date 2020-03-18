@@ -3,42 +3,57 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar,
   IonLabel,
   IonNote,
   IonBadge, 
-  IonTextarea,
   IonFooter,
   IonAvatar,
-  IonButton,
-  IonInput,
-  IonList,
-  IonPopover 
+  IonList
 } from '@ionic/react';
+
 import React, { useState, useEffect, useRef } from 'react';
+import { LanguageSelector } from '../components/LanguageSelector'
+import { MessageInput } from '../components/MessageInput'
 import { TranslationService } from '../services/translation'
 
 import './Home.css';
 
 const Home: React.FC = (props) => {
-  const [message, setMessage] = useState('');
   const ins: any[] = [];
   const [todos, setTodos] = useState(ins);
-  const [showPopover, setShowPopover] = useState(false);
+  const [originLanguage, setOriginLanguage] = useState('');
+  const [destinationLanguage, setDestinationLanguage] = useState('');
   const apikey ='trnsl.1.1.20200302T153100Z.ed576de6b9201294.01d9dbb5d5aaf34750c60694b203a0ecfdf0b5df';
   const translationService = new TranslationService(apikey)
   const socket = useRef(new WebSocket("ws://localhost:5002"))
+  const languages = [
+    {'name' : 'Spanish', 'code': 'es'},
+    {'name' : 'English', 'code': 'en'},
+    {'name' : 'French', 'code': 'fr'},
+    {'name' : 'Portuguese', 'code': 'pt'},
+    {'name' : 'German', 'code': 'de'},
+    {'name' : 'Italian', 'code': 'it'},
+    {'name' : 'Russian', 'code': 'ru'}
+  ]
 
-  function todoChange(e: any) {
-    setMessage(e.target.value);
-  }
+  // function todoChange(e: any) {
+    // setMessage(e.target.value);
+  // }
 
-  function transText(e: any) {
-    console.log("aquí pase", message)
+  function sendMessage(message: string) {
     if (message === '') return
       console.log(todos, message);
-      translationService.translate(message, 'en', 'es')
+      translationService.translate(message, originLanguage, destinationLanguage)
         .then(function (val) {
           console.log(val);
           socket.current.send(val);
-          setTodos([...todos, val]);
+          setTodos([...todos, message]);
         });
+  }
+
+  function handleOriginLanguage (language: string) {
+    setOriginLanguage(language);
+  }
+
+  function handleDestinationLanguage (language: string) {
+    setDestinationLanguage(language)
   }
 
   useEffect(() => {
@@ -88,27 +103,15 @@ const Home: React.FC = (props) => {
       </IonContent>
       <IonFooter>
         <IonItem>
-          <IonPopover
-            isOpen={showPopover}
-            onDidDismiss={e => setShowPopover(false)}
-          >
-            <p>Choose your Origin language</p>
-            <IonItem>
-              <IonButton slot="start" onClick={() => setShowPopover(true)}>English</IonButton>
-            </IonItem>
-            <IonItem>
-              <IonButton slot="start">French</IonButton>
-
-            </IonItem>
-
-          </IonPopover>
-          <IonButton slot="start" onClick={() => setShowPopover(true)}>Origin</IonButton>
-          <IonButton slot="start">Destination</IonButton>
+          <LanguageSelector
+            origin={handleOriginLanguage}
+            destination={handleDestinationLanguage}
+            languages={languages}
+          />
         </IonItem>
         <IonItem> 
           <IonToolbar>
-            <IonTextarea placeholder="message" onIonChange={ todoChange }></IonTextarea>
-            <IonButton slot="end" onClick={ transText }>Send</IonButton>
+            <MessageInput onSend={sendMessage} />
           </IonToolbar>
         </IonItem>
       </IonFooter>
