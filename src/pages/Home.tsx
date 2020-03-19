@@ -27,7 +27,7 @@ const Home: React.FC = (props) => {
   const [destinationLanguage, setDestinationLanguage] = useState('es');
   const apikey ='trnsl.1.1.20200302T153100Z.ed576de6b9201294.01d9dbb5d5aaf34750c60694b203a0ecfdf0b5df';
   const translationService = new TranslationService(apikey)
-  const socket = useRef(new WebSocket("ws://localhost:5002"))
+  const socket = useRef(new WebSocket("ws://35.196.99.179:8080"))
   const languages = [
     {'name' : 'Spanish', 'code': 'es'},
     {'name' : 'English', 'code': 'en'},
@@ -91,7 +91,7 @@ const Home: React.FC = (props) => {
         <IonToolbar>
           <IonItem>
             <IonAvatar>
-              <img src="../../../public/assets/icon/icon.png" />
+              <img src="https://github.com/jvcortes/chat4all/blob/master/public/assets/icon/icon.png?raw=true" />
             </IonAvatar>
             <IonLabel>
               <h1>Chat4ALL</h1>
