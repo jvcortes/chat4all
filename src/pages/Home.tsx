@@ -27,7 +27,7 @@ const Home: React.FC = (props) => {
   const [destinationLanguage, setDestinationLanguage] = useState('es');
   const apikey ='trnsl.1.1.20200302T153100Z.ed576de6b9201294.01d9dbb5d5aaf34750c60694b203a0ecfdf0b5df';
   const translationService = new TranslationService(apikey)
-  const socket = useRef(new WebSocket("ws://localhost:5002"))
+  const socket = useRef(new WebSocket("ws://35.237.10.249"))
   const languages = [
     {'name' : 'Spanish', 'code': 'es'},
     {'name' : 'English', 'code': 'en'},
@@ -116,11 +116,9 @@ const Home: React.FC = (props) => {
             languages={languages}
           />
         </IonItem>
-        <IonItem> 
-          <IonToolbar>
-            <MessageInput onSend={sendMessage} />
-          </IonToolbar>
-        </IonItem>
+        <IonToolbar>
+          <MessageInput onSend={sendMessage} />
+        </IonToolbar>
       </IonFooter>
 
       </IonPage>
