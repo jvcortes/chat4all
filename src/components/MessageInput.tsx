@@ -1,4 +1,6 @@
 import { IonInput, IonButton, IonToolbar } from '@ionic/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' 
+import { faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons' 
 import React, { useState } from 'react'
 
 
@@ -23,7 +25,10 @@ export const MessageInput: React.FC<{onSend: any}> = (props) => {
             value={message}
             onIonChange={(e: any) => setMessage(e.target.value)} />
 
-          <IonButton type="submit" slot="end">Send</IonButton>
+          <IonButton class="send-button" 
+                     type="submit" slot="end" expand="full" size="small">
+            <FontAwesomeIcon icon={faLongArrowAltRight} />
+          </IonButton>
         </IonToolbar>
       </form>
     </>

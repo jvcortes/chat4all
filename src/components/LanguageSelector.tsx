@@ -51,7 +51,7 @@ export const LanguageSelector: React.FC<{origin: any,
         </IonList>
       </IonPopover>
 
-      <IonButton onClick={() => setShowOriginPopover(true)}>{originLanguage}</IonButton>
+      <IonButton expand="full" onClick={() => setShowOriginPopover(true)}>{originLanguage}</IonButton>
       <IonPopover
         isOpen={showDestinationPopover}
         onDidDismiss={e => setShowDestinationPopover(false)}>
@@ -74,7 +74,7 @@ export const LanguageSelector: React.FC<{origin: any,
           )}
         </IonList>
       </IonPopover>
-      <IonButton onClick={() => setShowDestinationPopover(true)}>{destinationLanguage}</IonButton>
+      <IonButton expand="full" onClick={() => setShowDestinationPopover(true)}>{destinationLanguage}</IonButton>
     </> 
   )
 }
