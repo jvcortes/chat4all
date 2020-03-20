@@ -27,6 +27,9 @@ node index.js
 ## How to Run Chat4all
 To use the apk you can download directly in your android cellphones. if you want to run this in web browser, you should already installed node js and you should install all dependencies that we have in package.json
 
+click here to download in your andorid cellphone:
+(https://github.com/jvcortes/chat4all/raw/master/app-debug.apk)
+
 Browser mode:
 
 ```bash
