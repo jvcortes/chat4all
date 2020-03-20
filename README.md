@@ -1,9 +1,11 @@
 <p>
-<img width="260" height="90" src="https://github.com/jvcortes/chat4all/blob/master/public/assets/icon/icon.png?raw=true" align="right">
+<img width="90" height="90" src="https://github.com/jvcortes/chat4all/blob/master/public/assets/icon/icon.png?raw=true" align="right">
 </p>
 
 
 # Chat4all MVP Project
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/aVEEisPb1O4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Chat4all is a chat to speak in your native language with people with different languages.
 
