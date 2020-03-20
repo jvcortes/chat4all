@@ -27,6 +27,12 @@ node index.js
 ## How to Run Chat4all
 To use the apk you can download directly in your android cellphones. if you want to run this in web browser, you should already installed node js and you should install all dependencies that we have in package.json
 
+For APK:
+
+This apk is going to be working until April 1.
+
+Domwload in your cellphone and click yes in all permissions questions.
+
 click here to download in your andorid cellphone:
 [Chat4all_MVP](https://github.com/jvcortes/chat4all/raw/master/app-debug.apk)
 
@@ -42,13 +48,8 @@ ionic serve
 
 ```
 
-For APK:
 
-This apk is going to be working until April 1.
-
-Domwload in your cellphone and click yes in all permissions questions.
-
-#Django for contact list
+## Django for contact list
 We create API's to create a contact list in django, this is for the next step of this project. 
 
 install requirements first:
