@@ -5,7 +5,8 @@
 
 # Chat4all MVP Project
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/aVEEisPb1O4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+[![See our example](https://img.youtube.com/vi/aVEEisPb1O4/0.jpg)](https://www.youtube.com/watch?v=aVEEisPb1O4)
 
 Chat4all is a chat to speak in your native language with people with different languages.
 
