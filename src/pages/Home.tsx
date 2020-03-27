@@ -24,8 +24,12 @@ import './Home.css';
 /**
  * Home page.
  *
- * Displays the home page, which contains the chat feature.
- *
+ * Displays the home page, which contains the chat feature, composed of:
+ * - Header with title
+ * - Message list
+ * - Language selector
+ * - Message input
+
  * @param props - Component properties.
  *
  * @property messages - contains the displayed messages
@@ -40,12 +44,9 @@ import './Home.css';
  *           dispatch the messages.
  * @property languages - language list, used by the language selector.
  *
- * @return The component which holds the chat
- * feature, composed of:
- * - Header with title
- * - Message list
- * - Language selector
- * - Message input
+ * @see TranslationService, MessageInput, LanguageSelector
+ *
+ * @return - the home component.
  */
 const Home: React.FC = (props : any) => {
   const [messages, setMessages] = useState([{}]);

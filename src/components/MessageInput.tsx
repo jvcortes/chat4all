@@ -1,18 +1,29 @@
 import { IonInput, IonButton, IonToolbar } from '@ionic/react'
 import React, { useState } from 'react'
 
-
+/**
+ * Contains the message input.
+ *
+ * @param props - Component properties.
+ * 
+ * @property message - string containing the current message.
+ *
+ * @return Form containing a IonInput text field used to type the message
+ * and a send button.
+ */
 export const MessageInput: React.FC<{onSend: any}> = (props) => {
   const [message, setMessage] = useState('')
 
-  function send () {
-    props.onSend(message);
-    setMessage('');
-  }
-
+  /**
+   * Performs a function with the current message after the form is submitted.
+   * After performing the function call, the message gets emptied.
+   * 
+   * @param e - event
+   */
   function onFormSubmit(e: any) {
     e.preventDefault();
-    send();
+    props.onSend(message);
+    setMessage('');
   }
 
   return (
