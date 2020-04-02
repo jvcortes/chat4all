@@ -73,7 +73,7 @@ python3 manage.py runserver
 
 
 ## Authors
-[Javier Feo](https://github.com/jvcortes)
+[Javier Feo](https://github.com/jvcortes)</br>
 [Paulo Morillo](https://github.com/PauloMorillo)
 
 ## License
