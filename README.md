@@ -77,8 +77,8 @@ python3 manage.py runserver
 
 
 ## Authors
-[Javier Feo Cortés](https://github.com/jvcortes)</br>
-[Paulo Morillo](https://github.com/PauloMorillo)
+Javier Feo Cortés - [GitHub](https://github.com/jvcortes), [LinkedIn](https://www.linkedin.com/in/javier-felipe-feo-cort%C3%A9s-537457179/)</br>
+Paulo Morillo - [GitHub](https://github.com/PauloMorillo), [LinkedIn](https://www.linkedin.com/in/paulo-morillo-mu%C3%B1oz-191745143/)
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
