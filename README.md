@@ -8,9 +8,12 @@
 
 [![See our example](https://img.youtube.com/vi/aVEEisPb1O4/0.jpg)](https://www.youtube.com/watch?v=aVEEisPb1O4)
 
+[See our blog post](https://medium.com/@940/chat4all-8e414d17add)
 Chat4All is a text-messaging application where you can talk in your native language with people with different languages, through automatic translations.
 
 This is an MVP for for this reason the main idea is showing how the translate is working in real time.
+
+Blog on Medium
 
 ## WebSocket server
 
@@ -73,7 +76,7 @@ python3 manage.py runserver
 
 
 ## Authors
-[Javier Feo](https://github.com/jvcortes)</br>
+[Javier Feo Cortés](https://github.com/jvcortes)</br>
 [Paulo Morillo](https://github.com/PauloMorillo)
 
 ## License
